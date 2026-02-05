@@ -1094,7 +1094,9 @@ class CLIPVisionEncode:
 class StyleModelLoader:
     @classmethod
     def INPUT_TYPES(s):
-        return {"required": { "style_model_name": (folder_paths.get_filename_list("style_models"), )}}
+        return {"required": { "style_model_name": (folder_paths.get_filename_list("style_models"), {
+            "placeholder": folder_paths.get_model_placeholder("style_models")
+        })}}
 
     RETURN_TYPES = ("STYLE_MODEL",)
     FUNCTION = "load_style_model"
@@ -1193,7 +1195,9 @@ class unCLIPConditioning:
 class GLIGENLoader:
     @classmethod
     def INPUT_TYPES(s):
-        return {"required": { "gligen_name": (folder_paths.get_filename_list("gligen"), )}}
+        return {"required": { "gligen_name": (folder_paths.get_filename_list("gligen"), {
+            "placeholder": folder_paths.get_model_placeholder("gligen")
+        })}}
 
     RETURN_TYPES = ("GLIGEN",)
     FUNCTION = "load_gligen"
