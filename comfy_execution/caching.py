@@ -242,7 +242,7 @@ class BasicCache:
         return None
 
     async def _notify_providers_store(self, node_id, cache_key, value):
-        """Notify external providers of cache store (fire-and-forget)."""
+        """Notify external providers of cache store (non-blocking)."""
         from comfy_execution.cache_provider import (
             _has_cache_providers, _get_cache_providers,
             CacheValue, _contains_nan, _logger
@@ -272,7 +272,7 @@ class BasicCache:
 
     @staticmethod
     async def _safe_provider_store(provider, context, cache_value):
-        """Wrapper for fire-and-forget provider.on_store with error handling."""
+        """Wrapper for async provider.on_store with error handling."""
         from comfy_execution.cache_provider import _logger
         try:
             await provider.on_store(context, cache_value)

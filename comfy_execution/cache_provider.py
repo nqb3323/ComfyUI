@@ -1,8 +1,8 @@
 """
-External Cache Provider API for distributed caching.
+External Cache Provider API.
 
 This module provides a public API for external cache providers, enabling
-distributed caching across multiple ComfyUI instances (e.g., Kubernetes pods).
+shared caching across multiple ComfyUI instances.
 
 Public API is also available via:
     from comfy_api.latest import Caching
@@ -12,16 +12,16 @@ Example usage:
         CacheProvider, CacheContext, CacheValue, register_cache_provider
     )
 
-    class MyRedisProvider(CacheProvider):
+    class MyCacheProvider(CacheProvider):
         async def on_lookup(self, context: CacheContext) -> Optional[CacheValue]:
-            # Check Redis/GCS for cached result
+            # Check external storage for cached result
             ...
 
         async def on_store(self, context: CacheContext, value: CacheValue) -> None:
-            # Store to Redis/GCS
+            # Store result to external storage
             ...
 
-    register_cache_provider(MyRedisProvider())
+    register_cache_provider(MyCacheProvider())
 """
 
 from abc import ABC, abstractmethod
@@ -72,16 +72,16 @@ class CacheProvider(ABC):
 
     Async Safety:
         Provider methods are called from async context. Implementations
-        can use async I/O (aiohttp, asyncpg, etc.) directly.
+        can use async I/O directly.
 
     Error Handling:
         All methods are wrapped in try/except by the caller. Exceptions
         are logged but never propagate to break execution.
 
     Performance Guidelines:
-        - on_lookup: Should complete in <500ms (including network)
-        - on_store: Fire-and-forget via asyncio.create_task
-        - should_cache: Should be fast (<1ms), called frequently
+        - on_lookup: Should complete quickly (including any network I/O)
+        - on_store: Dispatched via asyncio.create_task (non-blocking)
+        - should_cache: Should be fast, called frequently
     """
 
     @abstractmethod
@@ -106,10 +106,10 @@ class CacheProvider(ABC):
         Store value to external cache.
 
         Called AFTER value is stored in local cache.
-        Dispatched as asyncio.create_task (fire-and-forget).
+        Dispatched via asyncio.create_task (non-blocking).
 
         Important:
-            - Should never block execution
+            - Should not block execution
             - Handle serialization failures gracefully
         """
         pass
@@ -209,9 +209,9 @@ def _canonicalize(obj: Any) -> Any:
     """
     Convert an object to a canonical, JSON-serializable form.
 
-    This ensures deterministic ordering regardless of Python's hash randomization,
-    which is critical for cross-pod cache key consistency. Frozensets in particular
-    have non-deterministic iteration order between Python sessions.
+    This ensures deterministic ordering regardless of Python's hash randomization.
+    Frozensets in particular have non-deterministic iteration order between
+    Python sessions, so consistent serialization requires explicit sorting.
     """
     if isinstance(obj, frozenset):
         # Sort frozenset items for deterministic ordering
@@ -246,13 +246,13 @@ def _serialize_cache_key(cache_key: Any) -> Optional[str]:
     """
     Serialize cache key to a hex digest string for external storage.
 
-    Returns SHA256 hex string suitable for Redis/database keys,
+    Returns SHA256 hex string suitable as an external storage key,
     or None if serialization fails entirely (fail-closed).
 
     Note: Uses canonicalize + JSON serialization instead of pickle because
     pickle is NOT deterministic across Python sessions due to hash randomization
-    affecting frozenset iteration order. This is critical for distributed caching
-    where different pods need to compute the same hash for identical inputs.
+    affecting frozenset iteration order. Consistent hashing is required so that
+    different instances compute the same key for identical inputs.
     """
     try:
         canonical = _canonicalize(cache_key)

@@ -119,24 +119,23 @@ class Types:
 
 class Caching:
     """
-    External cache provider API for distributed caching.
+    External cache provider API.
 
-    Enables sharing cached results across multiple ComfyUI instances
-    (e.g., Kubernetes pods) without monkey-patching internal methods.
+    Enables sharing cached results across multiple ComfyUI instances.
 
     Example usage:
         from comfy_api.latest import Caching
 
-        class MyRedisProvider(Caching.CacheProvider):
+        class MyCacheProvider(Caching.CacheProvider):
             async def on_lookup(self, context):
-                # Check Redis for cached result
+                # Check external storage for cached result
                 ...
 
             async def on_store(self, context, value):
-                # Store to Redis
+                # Store result to external storage
                 ...
 
-        Caching.register_provider(MyRedisProvider())
+        Caching.register_provider(MyCacheProvider())
     """
     # Import from comfy_execution.cache_provider (source of truth)
     from comfy_execution.cache_provider import (
