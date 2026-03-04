@@ -135,11 +135,10 @@ class Caching:
 
         Caching.register_provider(MyCacheProvider())
     """
-    # Import from comfy_execution.cache_provider (source of truth)
+    # Public types — defined in comfy_api.latest._caching (source of truth)
+    from ._caching import CacheProvider, CacheContext, CacheValue
+    # Registry functions — implementation in comfy_execution
     from comfy_execution.cache_provider import (
-        CacheProvider,
-        CacheContext,
-        CacheValue,
         register_cache_provider as register_provider,
         unregister_cache_provider as unregister_provider,
     )
