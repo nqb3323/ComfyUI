@@ -275,6 +275,7 @@ def list_tags_with_usage(
         .select_from(AssetReferenceTag)
         .join(AssetReference, AssetReference.id == AssetReferenceTag.asset_reference_id)
         .where(build_visible_owner_clause(owner_id))
+        .where(AssetReference.is_missing == False)  # noqa: E712
         .where(AssetReference.deleted_at.is_(None))
         .group_by(AssetReferenceTag.tag_name)
         .subquery()
@@ -311,6 +312,7 @@ def list_tags_with_usage(
             select(AssetReferenceTag.tag_name)
             .join(AssetReference, AssetReference.id == AssetReferenceTag.asset_reference_id)
             .where(build_visible_owner_clause(owner_id))
+            .where(AssetReference.is_missing == False)  # noqa: E712
             .where(AssetReference.deleted_at.is_(None))
             .group_by(AssetReferenceTag.tag_name)
         )

@@ -16,6 +16,7 @@ from app.assets.database.queries import (
     get_reference_by_id,
     get_reference_with_owner_check,
     list_references_page,
+    list_all_file_paths_by_asset_id,
     list_references_by_asset_id,
     set_reference_metadata,
     set_reference_preview,
@@ -176,11 +177,9 @@ def delete_asset_reference(
             session.commit()
             return True
 
-        # Orphaned asset - delete it and its files
-        refs = list_references_by_asset_id(session, asset_id=asset_id)
-        file_paths = [
-            r.file_path for r in (refs or []) if getattr(r, "file_path", None)
-        ]
+        # Orphaned asset - gather ALL file paths (including
+        # soft-deleted / missing refs) so their on-disk files get cleaned up.
+        file_paths = list_all_file_paths_by_asset_id(session, asset_id=asset_id)
         # Also include the just-deleted file path
         if file_path:
             file_paths.append(file_path)

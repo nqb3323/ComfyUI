@@ -549,7 +549,28 @@ def list_references_by_asset_id(
         session.execute(
             select(AssetReference)
             .where(AssetReference.asset_id == asset_id)
+            .where(AssetReference.is_missing == False)  # noqa: E712
+            .where(AssetReference.deleted_at.is_(None))
             .order_by(AssetReference.id.asc())
+        )
+        .scalars()
+        .all()
+    )
+
+
+def list_all_file_paths_by_asset_id(
+    session: Session,
+    asset_id: str,
+) -> list[str]:
+    """Return every file_path for an asset, including soft-deleted/missing refs.
+
+    Used for orphan cleanup where all on-disk files must be removed.
+    """
+    return list(
+        session.execute(
+            select(AssetReference.file_path)
+            .where(AssetReference.asset_id == asset_id)
+            .where(AssetReference.file_path.isnot(None))
         )
         .scalars()
         .all()
