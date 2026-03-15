@@ -430,9 +430,9 @@ class PromptServer():
                         resp["asset"] = {
                             "id": result.ref.id,
                             "name": result.ref.name,
-                            "asset_hash": result.asset.hash if result.asset else None,
-                            "size": result.asset.size_bytes if result.asset else None,
-                            "mime_type": result.asset.mime_type if result.asset else None,
+                            "asset_hash": result.asset.hash,
+                            "size": result.asset.size_bytes,
+                            "mime_type": result.asset.mime_type,
                             "tags": result.tags,
                         }
                     except Exception:
