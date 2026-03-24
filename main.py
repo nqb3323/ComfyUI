@@ -206,8 +206,8 @@ import hook_breaker_ac10a0
 import comfy.memory_management
 import comfy.model_patcher
 
-if enables_dynamic_vram() and comfy.model_management.is_nvidia() and not comfy.model_management.is_wsl():
-    if comfy.model_management.torch_version_numeric < (2, 8):
+if args.enable_dynamic_vram or (enables_dynamic_vram() and comfy.model_management.is_nvidia() and not comfy.model_management.is_wsl()):
+    if (not args.enable_dynamic_vram) and (comfy.model_management.torch_version_numeric < (2, 8)):
         logging.warning("Unsupported Pytorch detected. DynamicVRAM support requires Pytorch version 2.8 or later. Falling back to legacy ModelPatcher. VRAM estimates may be unreliable especially on Windows")
     elif comfy_aimdo.control.init_device(comfy.model_management.get_torch_device().index):
         if args.verbose == 'DEBUG':
@@ -470,6 +470,9 @@ if __name__ == "__main__":
 
     if sys.version_info.major == 3 and sys.version_info.minor < 10:
         logging.warning("WARNING: You are using a python version older than 3.10, please upgrade to a newer one. 3.12 and above is recommended.")
+
+    if args.disable_dynamic_vram:
+        logging.warning("Dynamic vram disabled with argument. If you have any issues with dynamic vram enabled please give us a detailed reports as this argument will be removed soon.")
 
     event_loop, _, start_all_func = start_comfyui()
     try:
