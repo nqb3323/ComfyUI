@@ -35,6 +35,7 @@ def _preload_angle():
 _preload_angle()
 os.environ.setdefault("PYOPENGL_PLATFORM", "egl")
 
+
 import OpenGL
 OpenGL.USE_ACCELERATE = False
 
@@ -115,6 +116,84 @@ def _egl_attribs(*values):
     return (ctypes.c_int32 * len(vals))(*vals)
 
 
+# EGL platform extension constants
+EGL_PLATFORM_ANGLE_ANGLE = 0x3202
+EGL_PLATFORM_ANGLE_TYPE_ANGLE = 0x3203
+EGL_PLATFORM_ANGLE_TYPE_VULKAN_ANGLE = 0x3450
+EGL_MESA_PLATFORM_SURFACELESS = 0x31DD
+
+
+_eglGetPlatformDisplayEXT = None
+
+def _get_egl_platform_display_ext(platform, native_display, attribs):
+    """Call eglGetPlatformDisplayEXT via ctypes (extension, not in PyOpenGL)."""
+    global _eglGetPlatformDisplayEXT
+    if _eglGetPlatformDisplayEXT is None:
+        from OpenGL import platform as _plat
+        egl_lib = _plat.PLATFORM.EGL
+        _get_proc = egl_lib.eglGetProcAddress
+        _get_proc.restype = ctypes.c_void_p
+        _get_proc.argtypes = [ctypes.c_char_p]
+        ptr = _get_proc(b"eglGetPlatformDisplayEXT")
+        if not ptr:
+            return None
+        func_type = ctypes.CFUNCTYPE(ctypes.c_void_p, ctypes.c_uint32, ctypes.c_void_p, ctypes.c_void_p)
+        _eglGetPlatformDisplayEXT = func_type(ptr)
+
+    raw = _eglGetPlatformDisplayEXT(platform, native_display, attribs)
+    if not raw:
+        return None
+    return ctypes.cast(raw, EGL.EGLDisplay)
+
+
+def _get_egl_display():
+    """Get an EGL display, trying the default first then ANGLE's Vulkan
+    platform for headless environments without a display server."""
+    failures = []
+
+    # Try the default display first (works when X11/Wayland is available)
+    display = EGL.eglGetDisplay(EGL.EGL_DEFAULT_DISPLAY)
+    if display:
+        major, minor = ctypes.c_int32(0), ctypes.c_int32(0)
+        try:
+            if EGL.eglInitialize(display, ctypes.byref(major), ctypes.byref(minor)):
+                return display, major.value, minor.value
+        except Exception as e:
+            failures.append(f"default: {e}")
+
+    logger.info("Default EGL display unavailable, trying headless fallbacks")
+
+    # Headless fallback strategies, tried in order:
+    headless_strategies = [
+        ("surfaceless", EGL_MESA_PLATFORM_SURFACELESS, None, None),
+        ("ANGLE Vulkan", EGL_PLATFORM_ANGLE_ANGLE, None,
+         _egl_attribs(EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_VULKAN_ANGLE)),
+    ]
+
+    for name, platform, native_display, attribs in headless_strategies:
+        display = _get_egl_platform_display_ext(platform, native_display, attribs)
+        if not display:
+            failures.append(f"{name}: eglGetPlatformDisplayEXT returned no display")
+            continue
+        major, minor = ctypes.c_int32(0), ctypes.c_int32(0)
+        try:
+            if EGL.eglInitialize(display, ctypes.byref(major), ctypes.byref(minor)):
+                logger.info(f"Using EGL {name} platform (headless)")
+                return display, major.value, minor.value
+            failures.append(f"{name}: eglInitialize returned false")
+        except Exception as e:
+            failures.append(f"{name}: {e}")
+            continue
+
+    details = "\n".join(f"  - {f}" for f in failures)
+    raise RuntimeError(
+        "Failed to initialize EGL display.\n"
+        "No display server and no headless EGL platform available.\n"
+        f"Tried:\n{details}\n"
+        "Ensure GPU drivers are installed or set DISPLAY for a virtual framebuffer."
+    )
+
+
 def _gl_str(name):
     """Get an OpenGL string parameter."""
     v = gl.glGetString(name)
@@ -172,15 +251,7 @@ class GLContext:
         self._vao = None
 
         try:
-            self._display = EGL.eglGetDisplay(EGL.EGL_DEFAULT_DISPLAY)
-            if not self._display:
-                raise RuntimeError("eglGetDisplay() returned no display")
-
-            major, minor = ctypes.c_int32(0), ctypes.c_int32(0)
-            if not EGL.eglInitialize(self._display, ctypes.byref(major), ctypes.byref(minor)):
-                err = EGL.eglGetError()
-                self._display = None
-                raise RuntimeError(f"eglInitialize() failed (EGL error: 0x{err:04X})")
+            self._display, self._egl_major, self._egl_minor = _get_egl_display()
 
             if not EGL.eglBindAPI(EGL.EGL_OPENGL_ES_API):
                 raise RuntimeError("eglBindAPI(EGL_OPENGL_ES_API) failed")
@@ -230,10 +301,12 @@ class GLContext:
         version = _gl_str(gl.GL_VERSION)
 
         GLContext._initialized = True
-        logger.info(f"GLSL context initialized in {elapsed:.1f}ms - {renderer} ({vendor}), GL {version}")
+        logger.info(f"GLSL context initialized in {elapsed:.1f}ms - EGL {self._egl_major}.{self._egl_minor}, {renderer} ({vendor}), GL {version}")
 
     def make_current(self):
-        EGL.eglMakeCurrent(self._display, self._surface, self._surface, self._context)
+        if not EGL.eglMakeCurrent(self._display, self._surface, self._surface, self._context):
+            err = EGL.eglGetError()
+            raise RuntimeError(f"eglMakeCurrent() failed (EGL error: 0x{err:04X})")
         if self._vao is not None:
             gl.glBindVertexArray(self._vao)
 
