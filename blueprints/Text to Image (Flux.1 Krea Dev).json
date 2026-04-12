@@ -1,15 +1,14 @@
 {
-  "id": "e1f9a0b2-05e9-487b-aa31-51c7cab858f1",
   "revision": 0,
-  "last_node_id": 56,
+  "last_node_id": 196,
   "last_link_id": 0,
   "nodes": [
     {
-      "id": -1,
-      "type": "bdd86761-15a4-4729-9084-b83c32448910",
+      "id": 196,
+      "type": "aa0a207e-bf0e-477c-a87f-f58fcf5f7749",
       "pos": [
-        -800,
-        140
+        1010,
+        130
       ],
       "size": [
         410,
@@ -42,6 +41,46 @@
             "name": "height"
           },
           "link": null
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": null
+        },
+        {
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": null
+        },
+        {
+          "name": "clip_name1",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name1"
+          },
+          "link": null
+        },
+        {
+          "name": "clip_name2",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name2"
+          },
+          "link": null
+        },
+        {
+          "name": "vae_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_name"
+          },
+          "link": null
         }
       ],
       "outputs": [
@@ -55,15 +94,15 @@
       "properties": {
         "proxyWidgets": [
           [
-            "-1",
+            "195",
             "text"
           ],
           [
-            "-1",
+            "27",
             "width"
           ],
           [
-            "-1",
+            "27",
             "height"
           ],
           [
@@ -71,29 +110,44 @@
             "seed"
           ],
           [
-            "31",
-            "control_after_generate"
+            "38",
+            "unet_name"
+          ],
+          [
+            "40",
+            "clip_name1"
+          ],
+          [
+            "40",
+            "clip_name2"
+          ],
+          [
+            "39",
+            "vae_name"
           ]
-        ]
+        ],
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.18.1"
       },
-      "widgets_values": [
-        "",
-        1024,
-        1024
-      ]
+      "widgets_values": [],
+      "title": "Text to Image (Flux.1 Krea Dev)"
     }
   ],
   "links": [],
-  "groups": [],
+  "version": 0.4,
   "definitions": {
     "subgraphs": [
       {
-        "id": "bdd86761-15a4-4729-9084-b83c32448910",
+        "id": "aa0a207e-bf0e-477c-a87f-f58fcf5f7749",
         "version": 1,
         "state": {
-          "lastGroupId": 3,
-          "lastNodeId": 51,
-          "lastLinkId": 74,
+          "lastGroupId": 8,
+          "lastNodeId": 196,
+          "lastLinkId": 395,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -105,14 +159,14 @@
             -1050,
             426,
             120,
-            100
+            200
           ]
         },
         "outputNode": {
           "id": -20,
           "bounding": [
-            510,
-            290,
+            620,
+            140,
             120,
             60
           ]
@@ -153,6 +207,66 @@
               -950,
               486
             ]
+          },
+          {
+            "id": "e2dc1c86-2fb4-4b80-b560-f30560af1897",
+            "name": "seed",
+            "type": "INT",
+            "linkIds": [
+              391
+            ],
+            "pos": [
+              -950,
+              506
+            ]
+          },
+          {
+            "id": "34b172e7-85b2-444a-9a4d-1221f272c46e",
+            "name": "unet_name",
+            "type": "COMBO",
+            "linkIds": [
+              392
+            ],
+            "pos": [
+              -950,
+              526
+            ]
+          },
+          {
+            "id": "073b7440-d943-4a2f-a3a1-fbdb8fcda9f9",
+            "name": "clip_name1",
+            "type": "COMBO",
+            "linkIds": [
+              393
+            ],
+            "pos": [
+              -950,
+              546
+            ]
+          },
+          {
+            "id": "55c1286a-4aca-41fc-b967-ae3d3fa7bc85",
+            "name": "clip_name2",
+            "type": "COMBO",
+            "linkIds": [
+              394
+            ],
+            "pos": [
+              -950,
+              566
+            ]
+          },
+          {
+            "id": "2241e4fc-9219-4be7-bf6d-3493b579ab5a",
+            "name": "vae_name",
+            "type": "COMBO",
+            "linkIds": [
+              395
+            ],
+            "pos": [
+              -950,
+              586
+            ]
           }
         ],
         "outputs": [
@@ -165,8 +279,8 @@
             ],
             "localized_name": "IMAGE",
             "pos": [
-              530,
-              310
+              640,
+              160
             ]
           }
         ],
@@ -176,15 +290,15 @@
             "id": 40,
             "type": "DualCLIPLoader",
             "pos": [
-              -790,
-              300
+              -780,
+              360
             ],
             "size": [
               270,
-              130
+              180
             ],
             "flags": {},
-            "order": 0,
+            "order": 5,
             "mode": 0,
             "inputs": [
               {
@@ -194,7 +308,7 @@
                 "widget": {
                   "name": "clip_name1"
                 },
-                "link": null
+                "link": 393
               },
               {
                 "localized_name": "clip_name2",
@@ -203,7 +317,7 @@
                 "widget": {
                   "name": "clip_name2"
                 },
-                "link": null
+                "link": 394
               },
               {
                 "localized_name": "type",
@@ -236,9 +350,13 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "DualCLIPLoader",
+              "ue_properties": {
+                "widget_ue_connectable": {},
+                "input_ue_unconnectable": {}
+              },
               "cnr_id": "comfy-core",
               "ver": "0.3.40",
+              "Node name for S&R": "DualCLIPLoader",
               "models": [
                 {
                   "name": "clip_l.safetensors",
@@ -263,15 +381,15 @@
             "id": 39,
             "type": "VAELoader",
             "pos": [
-              -790,
-              480
+              -770,
+              630
             ],
             "size": [
-              270,
-              58
+              240,
+              110
             ],
             "flags": {},
-            "order": 1,
+            "order": 4,
             "mode": 0,
             "inputs": [
               {
@@ -281,7 +399,7 @@
                 "widget": {
                   "name": "vae_name"
                 },
-                "link": null
+                "link": 395
               }
             ],
             "outputs": [
@@ -295,9 +413,13 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "VAELoader",
+              "ue_properties": {
+                "widget_ue_connectable": {},
+                "input_ue_unconnectable": {}
+              },
               "cnr_id": "comfy-core",
               "ver": "0.3.40",
+              "Node name for S&R": "VAELoader",
               "models": [
                 {
                   "name": "ae.safetensors",
@@ -314,15 +436,15 @@
             "id": 38,
             "type": "UNETLoader",
             "pos": [
-              -790,
-              160
+              -780,
+              170
             ],
             "size": [
               270,
-              82
+              110
             ],
             "flags": {},
-            "order": 2,
+            "order": 3,
             "mode": 0,
             "inputs": [
               {
@@ -332,7 +454,7 @@
                 "widget": {
                   "name": "unet_name"
                 },
-                "link": null
+                "link": 392
               },
               {
                 "localized_name": "weight_dtype",
@@ -355,9 +477,13 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "UNETLoader",
+              "ue_properties": {
+                "widget_ue_connectable": {},
+                "input_ue_unconnectable": {}
+              },
               "cnr_id": "comfy-core",
               "ver": "0.3.40",
+              "Node name for S&R": "UNETLoader",
               "models": [
                 {
                   "name": "flux1-krea-dev_fp8_scaled.safetensors",
@@ -372,10 +498,10 @@
             ]
           },
           {
-            "id": 45,
+            "id": 195,
             "type": "CLIPTextEncode",
             "pos": [
-              -460,
+              -440,
               180
             ],
             "size": [
@@ -414,9 +540,13 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "CLIPTextEncode",
+              "ue_properties": {
+                "widget_ue_connectable": {},
+                "input_ue_unconnectable": {}
+              },
               "cnr_id": "comfy-core",
-              "ver": "0.3.47"
+              "ver": "0.3.47",
+              "Node name for S&R": "CLIPTextEncode"
             },
             "widgets_values": [
               ""
@@ -426,15 +556,15 @@
             "id": 27,
             "type": "EmptySD3LatentImage",
             "pos": [
-              -790,
-              640
+              -390,
+              650
             ],
             "size": [
               270,
-              120
+              170
             ],
             "flags": {},
-            "order": 4,
+            "order": 1,
             "mode": 0,
             "inputs": [
               {
@@ -477,9 +607,13 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "EmptySD3LatentImage",
+              "ue_properties": {
+                "widget_ue_connectable": {},
+                "input_ue_unconnectable": {}
+              },
               "cnr_id": "comfy-core",
-              "ver": "0.3.40"
+              "ver": "0.3.40",
+              "Node name for S&R": "EmptySD3LatentImage"
             },
             "widgets_values": [
               1024,
@@ -491,15 +625,15 @@
             "id": 31,
             "type": "KSampler",
             "pos": [
-              -70,
+              0,
               130
             ],
             "size": [
-              315,
-              262
+              320,
+              350
             ],
             "flags": {},
-            "order": 5,
+            "order": 2,
             "mode": 0,
             "inputs": [
               {
@@ -533,7 +667,7 @@
                 "widget": {
                   "name": "seed"
                 },
-                "link": null
+                "link": 391
               },
               {
                 "localized_name": "steps",
@@ -593,9 +727,13 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "KSampler",
+              "ue_properties": {
+                "widget_ue_connectable": {},
+                "input_ue_unconnectable": {}
+              },
               "cnr_id": "comfy-core",
-              "ver": "0.3.40"
+              "ver": "0.3.40",
+              "Node name for S&R": "KSampler"
             },
             "widgets_values": [
               0,
@@ -611,17 +749,17 @@
             "id": 8,
             "type": "VAEDecode",
             "pos": [
-              270,
+              340,
               140
             ],
             "size": [
-              210,
-              46
+              230,
+              100
             ],
             "flags": {
               "collapsed": false
             },
-            "order": 3,
+            "order": 0,
             "mode": 0,
             "inputs": [
               {
@@ -649,22 +787,25 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "VAEDecode",
+              "ue_properties": {
+                "widget_ue_connectable": {},
+                "input_ue_unconnectable": {}
+              },
               "cnr_id": "comfy-core",
-              "ver": "0.3.40"
-            },
-            "widgets_values": []
+              "ver": "0.3.40",
+              "Node name for S&R": "VAEDecode"
+            }
           },
           {
             "id": 42,
             "type": "ConditioningZeroOut",
             "pos": [
-              -460,
-              440
+              -340,
+              430
             ],
             "size": [
-              204.134765625,
-              30
+              230,
+              80
             ],
             "flags": {
               "collapsed": false
@@ -690,50 +831,53 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "ConditioningZeroOut",
+              "ue_properties": {
+                "widget_ue_connectable": {},
+                "input_ue_unconnectable": {}
+              },
               "cnr_id": "comfy-core",
-              "ver": "0.3.40"
-            },
-            "widgets_values": []
+              "ver": "0.3.40",
+              "Node name for S&R": "ConditioningZeroOut"
+            }
           }
         ],
         "groups": [
           {
             "id": 1,
-            "title": "Step 1 - Load Models Here",
+            "title": "Model",
             "bounding": [
               -800,
               90,
-              300,
-              460
+              310,
+              750
             ],
-            "color": "#444",
+            "color": "#3f789e",
             "font_size": 24,
             "flags": {}
           },
           {
             "id": 2,
-            "title": "Step 2 - Image Size",
+            "title": "Image Size",
             "bounding": [
-              -800,
-              570,
-              300,
-              200
+              -460,
+              560,
+              400,
+              280
             ],
-            "color": "#444",
+            "color": "#3f789e",
             "font_size": 24,
             "flags": {}
           },
           {
             "id": 3,
-            "title": "Step 3 - Prompt",
+            "title": "Prompt",
             "bounding": [
-              -480,
+              -460,
               90,
-              380,
-              410
+              400,
+              440
             ],
-            "color": "#444",
+            "color": "#3f789e",
             "font_size": 24,
             "flags": {}
           }
@@ -741,7 +885,7 @@
         "links": [
           {
             "id": 66,
-            "origin_id": 45,
+            "origin_id": 195,
             "origin_slot": 0,
             "target_id": 42,
             "target_slot": 0,
@@ -773,7 +917,7 @@
           },
           {
             "id": 65,
-            "origin_id": 45,
+            "origin_id": 195,
             "origin_slot": 0,
             "target_id": 31,
             "target_slot": 1,
@@ -799,7 +943,7 @@
             "id": 64,
             "origin_id": 40,
             "origin_slot": 0,
-            "target_id": 45,
+            "target_id": 195,
             "target_slot": 0,
             "type": "CLIP"
           },
@@ -815,7 +959,7 @@
             "id": 71,
             "origin_id": -10,
             "origin_slot": 0,
-            "target_id": 45,
+            "target_id": 195,
             "target_slot": 1,
             "type": "STRING"
           },
@@ -834,6 +978,46 @@
             "target_id": 27,
             "target_slot": 1,
             "type": "INT"
+          },
+          {
+            "id": 391,
+            "origin_id": -10,
+            "origin_slot": 3,
+            "target_id": 31,
+            "target_slot": 4,
+            "type": "INT"
+          },
+          {
+            "id": 392,
+            "origin_id": -10,
+            "origin_slot": 4,
+            "target_id": 38,
+            "target_slot": 0,
+            "type": "COMBO"
+          },
+          {
+            "id": 393,
+            "origin_id": -10,
+            "origin_slot": 5,
+            "target_id": 40,
+            "target_slot": 0,
+            "type": "COMBO"
+          },
+          {
+            "id": 394,
+            "origin_id": -10,
+            "origin_slot": 6,
+            "target_id": 40,
+            "target_slot": 1,
+            "type": "COMBO"
+          },
+          {
+            "id": 395,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 39,
+            "target_slot": 0,
+            "type": "COMBO"
           }
         ],
         "extra": {
@@ -843,16 +1027,14 @@
       }
     ]
   },
-  "config": {},
   "extra": {
-    "workflowRendererVersion": "LG",
     "ds": {
       "scale": 0.735584459955559,
       "offset": [
         1936.5815687336737,
         303.78330847702625
       ]
-    }
-  },
-  "version": 0.4
+    },
+    "ue_links": []
+  }
 }
