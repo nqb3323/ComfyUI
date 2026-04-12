@@ -1,18 +1,18 @@
 {
   "revision": 0,
-  "last_node_id": 22,
+  "last_node_id": 39,
   "last_link_id": 0,
   "nodes": [
     {
-      "id": 22,
-      "type": "338a94d3-1c81-48c8-9edd-9907114ba7e7",
+      "id": 39,
+      "type": "69b00ff6-08d6-407d-8083-2897974ee2a1",
       "pos": [
-        400,
-        530
+        810,
+        1100
       ],
       "size": [
         400,
-        450
+        0
       ],
       "flags": {},
       "order": 3,
@@ -37,6 +37,22 @@
           "type": "INT",
           "widget": {
             "name": "steps"
+          },
+          "link": null
+        },
+        {
+          "name": "cfg",
+          "type": "FLOAT",
+          "widget": {
+            "name": "cfg"
+          },
+          "link": null
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
           },
           "link": null
         },
@@ -76,23 +92,31 @@
       "properties": {
         "proxyWidgets": [
           [
-            "4",
+            "27",
             "prompt"
           ],
           [
-            "7",
+            "33",
             "steps"
           ],
           [
-            "1",
+            "33",
+            "cfg"
+          ],
+          [
+            "33",
+            "seed"
+          ],
+          [
+            "34",
             "unet_name"
           ],
           [
-            "2",
+            "38",
             "clip_name"
           ],
           [
-            "3",
+            "26",
             "vae_name"
           ]
         ],
@@ -113,12 +137,12 @@
   "definitions": {
     "subgraphs": [
       {
-        "id": "338a94d3-1c81-48c8-9edd-9907114ba7e7",
+        "id": "69b00ff6-08d6-407d-8083-2897974ee2a1",
         "version": 1,
         "state": {
           "lastGroupId": 4,
-          "lastNodeId": 25,
-          "lastLinkId": 40,
+          "lastNodeId": 39,
+          "lastLinkId": 46,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -130,7 +154,7 @@
             -750,
             380,
             120,
-            160
+            200
           ]
         },
         "outputNode": {
@@ -181,11 +205,11 @@
             ]
           },
           {
-            "id": "3f7f9b1f-7252-44a8-a783-f078dd753370",
-            "name": "unet_name",
-            "type": "COMBO",
+            "id": "2213f872-d40f-4fc3-be01-b8fc73f1d92c",
+            "name": "cfg",
+            "type": "FLOAT",
             "linkIds": [
-              38
+              42
             ],
             "pos": [
               -650,
@@ -193,11 +217,11 @@
             ]
           },
           {
-            "id": "45bc9cbf-aa94-49c5-b08f-7c5efbd17b14",
-            "name": "clip_name",
-            "type": "COMBO",
+            "id": "2c7b3e65-e71e-4a9b-a9f8-d2e814ccb6af",
+            "name": "seed",
+            "type": "INT",
             "linkIds": [
-              39
+              43
             ],
             "pos": [
               -650,
@@ -205,15 +229,39 @@
             ]
           },
           {
-            "id": "a6fc2619-e146-4d8e-8012-bffcb576297f",
-            "name": "vae_name",
+            "id": "bddb2317-7210-48d5-81fd-6b2d6fac33f4",
+            "name": "unet_name",
             "type": "COMBO",
             "linkIds": [
-              40
+              44
             ],
             "pos": [
               -650,
               500
+            ]
+          },
+          {
+            "id": "a283167b-6d7f-4d19-ad86-1fff2335c08d",
+            "name": "clip_name",
+            "type": "COMBO",
+            "linkIds": [
+              45
+            ],
+            "pos": [
+              -650,
+              520
+            ]
+          },
+          {
+            "id": "e033047f-cc37-4043-b4a0-25d7bab661af",
+            "name": "vae_name",
+            "type": "COMBO",
+            "linkIds": [
+              46
+            ],
+            "pos": [
+              -650,
+              540
             ]
           }
         ],
@@ -236,7 +284,7 @@
         "widgets": [],
         "nodes": [
           {
-            "id": 3,
+            "id": 26,
             "type": "VAELoader",
             "pos": [
               -360,
@@ -247,7 +295,7 @@
               110
             ],
             "flags": {},
-            "order": 2,
+            "order": 0,
             "mode": 0,
             "inputs": [
               {
@@ -257,7 +305,7 @@
                 "widget": {
                   "name": "vae_name"
                 },
-                "link": 40
+                "link": 46
               }
             ],
             "outputs": [
@@ -296,7 +344,7 @@
             ]
           },
           {
-            "id": 4,
+            "id": 27,
             "type": "TextEncodeQwenImageEdit",
             "pos": [
               10,
@@ -307,7 +355,7 @@
               190
             ],
             "flags": {},
-            "order": 3,
+            "order": 1,
             "mode": 0,
             "inputs": [
               {
@@ -366,7 +414,7 @@
             ]
           },
           {
-            "id": 5,
+            "id": 28,
             "type": "TextEncodeQwenImageEdit",
             "pos": [
               10,
@@ -377,7 +425,7 @@
               190
             ],
             "flags": {},
-            "order": 4,
+            "order": 2,
             "mode": 0,
             "inputs": [
               {
@@ -436,7 +484,7 @@
             ]
           },
           {
-            "id": 15,
+            "id": 29,
             "type": "FluxKontextMultiReferenceLatentMethod",
             "pos": [
               660,
@@ -447,7 +495,7 @@
               80
             ],
             "flags": {},
-            "order": 11,
+            "order": 3,
             "mode": 0,
             "showAdvanced": false,
             "inputs": [
@@ -493,7 +541,7 @@
             ]
           },
           {
-            "id": 12,
+            "id": 30,
             "type": "FluxGuidance",
             "pos": [
               330,
@@ -504,7 +552,7 @@
               110
             ],
             "flags": {},
-            "order": 9,
+            "order": 4,
             "mode": 0,
             "inputs": [
               {
@@ -549,7 +597,7 @@
             ]
           },
           {
-            "id": 11,
+            "id": 31,
             "type": "FluxGuidance",
             "pos": [
               330,
@@ -560,7 +608,7 @@
               110
             ],
             "flags": {},
-            "order": 8,
+            "order": 5,
             "mode": 0,
             "inputs": [
               {
@@ -605,7 +653,7 @@
             ]
           },
           {
-            "id": 16,
+            "id": 32,
             "type": "FluxKontextMultiReferenceLatentMethod",
             "pos": [
               660,
@@ -616,7 +664,7 @@
               80
             ],
             "flags": {},
-            "order": 12,
+            "order": 6,
             "mode": 0,
             "inputs": [
               {
@@ -661,7 +709,7 @@
             ]
           },
           {
-            "id": 7,
+            "id": 33,
             "type": "KSampler",
             "pos": [
               1080,
@@ -672,7 +720,7 @@
               460
             ],
             "flags": {},
-            "order": 6,
+            "order": 7,
             "mode": 0,
             "inputs": [
               {
@@ -706,7 +754,7 @@
                 "widget": {
                   "name": "seed"
                 },
-                "link": null
+                "link": 43
               },
               {
                 "localized_name": "steps",
@@ -724,7 +772,7 @@
                 "widget": {
                   "name": "cfg"
                 },
-                "link": null
+                "link": 42
               },
               {
                 "localized_name": "sampler_name",
@@ -786,7 +834,7 @@
             ]
           },
           {
-            "id": 1,
+            "id": 34,
             "type": "UNETLoader",
             "pos": [
               -360,
@@ -797,7 +845,7 @@
               110
             ],
             "flags": {},
-            "order": 0,
+            "order": 8,
             "mode": 0,
             "inputs": [
               {
@@ -807,7 +855,7 @@
                 "widget": {
                   "name": "unet_name"
                 },
-                "link": 38
+                "link": 44
               },
               {
                 "localized_name": "weight_dtype",
@@ -853,7 +901,7 @@
             ]
           },
           {
-            "id": 6,
+            "id": 35,
             "type": "VAEEncode",
             "pos": [
               710,
@@ -864,7 +912,7 @@
               100
             ],
             "flags": {},
-            "order": 5,
+            "order": 9,
             "mode": 0,
             "inputs": [
               {
@@ -903,7 +951,7 @@
             }
           },
           {
-            "id": 8,
+            "id": 36,
             "type": "VAEDecode",
             "pos": [
               1100,
@@ -911,10 +959,10 @@
             ],
             "size": [
               230,
-              80
+              100
             ],
             "flags": {},
-            "order": 7,
+            "order": 10,
             "mode": 0,
             "inputs": [
               {
@@ -953,7 +1001,7 @@
             }
           },
           {
-            "id": 14,
+            "id": 37,
             "type": "ImageScaleToTotalPixels",
             "pos": [
               -370,
@@ -964,7 +1012,7 @@
               140
             ],
             "flags": {},
-            "order": 10,
+            "order": 11,
             "mode": 0,
             "inputs": [
               {
@@ -1031,7 +1079,7 @@
             ]
           },
           {
-            "id": 2,
+            "id": 38,
             "type": "CLIPLoader",
             "pos": [
               -360,
@@ -1042,7 +1090,7 @@
               150
             ],
             "flags": {},
-            "order": 1,
+            "order": 12,
             "mode": 0,
             "inputs": [
               {
@@ -1052,7 +1100,7 @@
                 "widget": {
                   "name": "clip_name"
                 },
-                "link": 39
+                "link": 45
               },
               {
                 "localized_name": "type",
@@ -1154,145 +1202,145 @@
         "links": [
           {
             "id": 2,
-            "origin_id": 2,
+            "origin_id": 38,
             "origin_slot": 0,
-            "target_id": 4,
+            "target_id": 27,
             "target_slot": 0,
             "type": "CLIP"
           },
           {
             "id": 4,
-            "origin_id": 3,
+            "origin_id": 26,
             "origin_slot": 0,
-            "target_id": 4,
+            "target_id": 27,
             "target_slot": 1,
             "type": "VAE"
           },
           {
             "id": 15,
-            "origin_id": 14,
+            "origin_id": 37,
             "origin_slot": 0,
-            "target_id": 4,
+            "target_id": 27,
             "target_slot": 2,
             "type": "IMAGE"
           },
           {
             "id": 3,
-            "origin_id": 2,
+            "origin_id": 38,
             "origin_slot": 0,
-            "target_id": 5,
+            "target_id": 28,
             "target_slot": 0,
             "type": "CLIP"
           },
           {
             "id": 5,
-            "origin_id": 3,
+            "origin_id": 26,
             "origin_slot": 0,
-            "target_id": 5,
+            "target_id": 28,
             "target_slot": 1,
             "type": "VAE"
           },
           {
             "id": 16,
-            "origin_id": 14,
+            "origin_id": 37,
             "origin_slot": 0,
-            "target_id": 5,
+            "target_id": 28,
             "target_slot": 2,
             "type": "IMAGE"
           },
           {
             "id": 10,
-            "origin_id": 11,
+            "origin_id": 31,
             "origin_slot": 0,
-            "target_id": 15,
+            "target_id": 29,
             "target_slot": 0,
             "type": "CONDITIONING"
           },
           {
             "id": 9,
-            "origin_id": 5,
+            "origin_id": 28,
             "origin_slot": 0,
-            "target_id": 12,
+            "target_id": 30,
             "target_slot": 0,
             "type": "CONDITIONING"
           },
           {
             "id": 8,
-            "origin_id": 4,
+            "origin_id": 27,
             "origin_slot": 0,
-            "target_id": 11,
+            "target_id": 31,
             "target_slot": 0,
             "type": "CONDITIONING"
           },
           {
             "id": 11,
-            "origin_id": 12,
+            "origin_id": 30,
             "origin_slot": 0,
-            "target_id": 16,
+            "target_id": 32,
             "target_slot": 0,
             "type": "CONDITIONING"
           },
           {
             "id": 1,
-            "origin_id": 1,
+            "origin_id": 34,
             "origin_slot": 0,
-            "target_id": 7,
+            "target_id": 33,
             "target_slot": 0,
             "type": "MODEL"
           },
           {
             "id": 12,
-            "origin_id": 15,
+            "origin_id": 29,
             "origin_slot": 0,
-            "target_id": 7,
+            "target_id": 33,
             "target_slot": 1,
             "type": "CONDITIONING"
           },
           {
             "id": 13,
-            "origin_id": 16,
+            "origin_id": 32,
             "origin_slot": 0,
-            "target_id": 7,
+            "target_id": 33,
             "target_slot": 2,
             "type": "CONDITIONING"
           },
           {
             "id": 18,
-            "origin_id": 6,
+            "origin_id": 35,
             "origin_slot": 0,
-            "target_id": 7,
+            "target_id": 33,
             "target_slot": 3,
             "type": "LATENT"
           },
           {
             "id": 17,
-            "origin_id": 14,
+            "origin_id": 37,
             "origin_slot": 0,
-            "target_id": 6,
+            "target_id": 35,
             "target_slot": 0,
             "type": "IMAGE"
           },
           {
             "id": 6,
-            "origin_id": 3,
+            "origin_id": 26,
             "origin_slot": 0,
-            "target_id": 6,
+            "target_id": 35,
             "target_slot": 1,
             "type": "VAE"
           },
           {
             "id": 19,
-            "origin_id": 7,
+            "origin_id": 33,
             "origin_slot": 0,
-            "target_id": 8,
+            "target_id": 36,
             "target_slot": 0,
             "type": "LATENT"
           },
           {
             "id": 7,
-            "origin_id": 3,
+            "origin_id": 26,
             "origin_slot": 0,
-            "target_id": 8,
+            "target_id": 36,
             "target_slot": 1,
             "type": "VAE"
           },
@@ -1300,13 +1348,13 @@
             "id": 14,
             "origin_id": -10,
             "origin_slot": 0,
-            "target_id": 14,
+            "target_id": 37,
             "target_slot": 0,
             "type": "IMAGE"
           },
           {
             "id": 20,
-            "origin_id": 8,
+            "origin_id": 36,
             "origin_slot": 0,
             "target_id": -20,
             "target_slot": 0,
@@ -1316,7 +1364,7 @@
             "id": 36,
             "origin_id": -10,
             "origin_slot": 1,
-            "target_id": 4,
+            "target_id": 27,
             "target_slot": 3,
             "type": "STRING"
           },
@@ -1324,31 +1372,47 @@
             "id": 37,
             "origin_id": -10,
             "origin_slot": 2,
-            "target_id": 7,
+            "target_id": 33,
             "target_slot": 5,
             "type": "INT"
           },
           {
-            "id": 38,
+            "id": 42,
             "origin_id": -10,
             "origin_slot": 3,
-            "target_id": 1,
-            "target_slot": 0,
-            "type": "COMBO"
+            "target_id": 33,
+            "target_slot": 6,
+            "type": "FLOAT"
           },
           {
-            "id": 39,
+            "id": 43,
             "origin_id": -10,
             "origin_slot": 4,
-            "target_id": 2,
+            "target_id": 33,
+            "target_slot": 4,
+            "type": "INT"
+          },
+          {
+            "id": 44,
+            "origin_id": -10,
+            "origin_slot": 5,
+            "target_id": 34,
             "target_slot": 0,
             "type": "COMBO"
           },
           {
-            "id": 40,
+            "id": 45,
             "origin_id": -10,
-            "origin_slot": 5,
-            "target_id": 3,
+            "origin_slot": 6,
+            "target_id": 38,
+            "target_slot": 0,
+            "type": "COMBO"
+          },
+          {
+            "id": 46,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 26,
             "target_slot": 0,
             "type": "COMBO"
           }
@@ -1358,5 +1422,7 @@
       }
     ]
   },
-  "extra": {}
+  "extra": {
+    "ue_links": []
+  }
 }

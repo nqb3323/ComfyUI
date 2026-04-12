@@ -1,15 +1,14 @@
 {
-  "id": "78bdb6eb-f866-4a7f-98fd-1dca28934520",
   "revision": 0,
-  "last_node_id": 48,
+  "last_node_id": 193,
   "last_link_id": 0,
   "nodes": [
     {
-      "id": -1,
-      "type": "82187329-39e2-40fd-ac5b-4554be4b2cec",
+      "id": 193,
+      "type": "1fd98b34-59ef-4d8d-afbf-58bdd7a1cd35",
       "pos": [
-        -700,
-        230
+        -1210,
+        -1770
       ],
       "size": [
         400,
@@ -20,6 +19,7 @@
       "mode": 0,
       "inputs": [
         {
+          "label": "prompt",
           "name": "text",
           "type": "STRING",
           "widget": {
@@ -42,6 +42,46 @@
             "name": "height"
           },
           "link": null
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": null
+        },
+        {
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": null
+        },
+        {
+          "name": "clip_name1",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name1"
+          },
+          "link": null
+        },
+        {
+          "name": "clip_name2",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name2"
+          },
+          "link": null
+        },
+        {
+          "name": "vae_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_name"
+          },
+          "link": null
         }
       ],
       "outputs": [
@@ -55,15 +95,15 @@
       "properties": {
         "proxyWidgets": [
           [
-            "-1",
+            "45",
             "text"
           ],
           [
-            "-1",
+            "27",
             "width"
           ],
           [
-            "-1",
+            "27",
             "height"
           ],
           [
@@ -71,29 +111,48 @@
             "seed"
           ],
           [
+            "38",
+            "unet_name"
+          ],
+          [
+            "40",
+            "clip_name1"
+          ],
+          [
+            "40",
+            "clip_name2"
+          ],
+          [
+            "39",
+            "vae_name"
+          ],
+          [
             "31",
             "control_after_generate"
           ]
-        ]
+        ],
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.18.1"
       },
-      "widgets_values": [
-        "",
-        1024,
-        1024
-      ]
+      "widgets_values": [],
+      "title": "Text to Image (Flux.1 Dev)"
     }
   ],
   "links": [],
-  "groups": [],
+  "version": 0.4,
   "definitions": {
     "subgraphs": [
       {
-        "id": "82187329-39e2-40fd-ac5b-4554be4b2cec",
+        "id": "1fd98b34-59ef-4d8d-afbf-58bdd7a1cd35",
         "version": 1,
         "state": {
-          "lastGroupId": 3,
-          "lastNodeId": 45,
-          "lastLinkId": 71,
+          "lastGroupId": 8,
+          "lastNodeId": 193,
+          "lastLinkId": 388,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -105,7 +164,7 @@
             -1090,
             411,
             120,
-            100
+            200
           ]
         },
         "outputNode": {
@@ -125,6 +184,7 @@
             "linkIds": [
               68
             ],
+            "label": "prompt",
             "pos": [
               -990,
               431
@@ -153,6 +213,66 @@
               -990,
               471
             ]
+          },
+          {
+            "id": "ea5ea317-a484-4605-8138-8628a4b8e502",
+            "name": "seed",
+            "type": "INT",
+            "linkIds": [
+              382
+            ],
+            "pos": [
+              -990,
+              491
+            ]
+          },
+          {
+            "id": "ea2332f5-bd49-4e2e-8c7a-95817dc56ed6",
+            "name": "unet_name",
+            "type": "COMBO",
+            "linkIds": [
+              385
+            ],
+            "pos": [
+              -990,
+              511
+            ]
+          },
+          {
+            "id": "4fca3f43-c05f-4337-bf84-2afe67e43739",
+            "name": "clip_name1",
+            "type": "COMBO",
+            "linkIds": [
+              386
+            ],
+            "pos": [
+              -990,
+              531
+            ]
+          },
+          {
+            "id": "357a679f-1370-4cd5-9269-0d5ae1986b49",
+            "name": "clip_name2",
+            "type": "COMBO",
+            "linkIds": [
+              387
+            ],
+            "pos": [
+              -990,
+              551
+            ]
+          },
+          {
+            "id": "924ffec5-81f8-4585-8761-5a80d5d775bc",
+            "name": "vae_name",
+            "type": "COMBO",
+            "linkIds": [
+              388
+            ],
+            "pos": [
+              -990,
+              571
+            ]
           }
         ],
         "outputs": [
@@ -176,15 +296,15 @@
             "id": 39,
             "type": "VAELoader",
             "pos": [
-              -810.0000904528541,
-              459.99996840286354
+              -800,
+              670
             ],
             "size": [
               270,
-              68.33333333333334
+              110
             ],
             "flags": {},
-            "order": 0,
+            "order": 4,
             "mode": 0,
             "inputs": [
               {
@@ -194,7 +314,7 @@
                 "widget": {
                   "name": "vae_name"
                 },
-                "link": null
+                "link": 388
               }
             ],
             "outputs": [
@@ -208,9 +328,13 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "VAELoader",
+              "ue_properties": {
+                "widget_ue_connectable": {},
+                "input_ue_unconnectable": {}
+              },
               "cnr_id": "comfy-core",
               "ver": "0.3.40",
+              "Node name for S&R": "VAELoader",
               "models": [
                 {
                   "name": "ae.safetensors",
@@ -227,15 +351,15 @@
             "id": 38,
             "type": "UNETLoader",
             "pos": [
-              -810.0000904528541,
-              140.000007743226
+              -800,
+              160
             ],
             "size": [
               270,
-              96.66666666666667
+              110
             ],
             "flags": {},
-            "order": 1,
+            "order": 3,
             "mode": 0,
             "inputs": [
               {
@@ -245,7 +369,7 @@
                 "widget": {
                   "name": "unet_name"
                 },
-                "link": null
+                "link": 385
               },
               {
                 "localized_name": "weight_dtype",
@@ -268,9 +392,13 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "UNETLoader",
+              "ue_properties": {
+                "widget_ue_connectable": {},
+                "input_ue_unconnectable": {}
+              },
               "cnr_id": "comfy-core",
               "ver": "0.3.40",
+              "Node name for S&R": "UNETLoader",
               "models": [
                 {
                   "name": "flux1-dev.safetensors",
@@ -288,15 +416,15 @@
             "id": 40,
             "type": "DualCLIPLoader",
             "pos": [
-              -810.0000904528541,
-              279.99999771145144
+              -800,
+              380
             ],
             "size": [
               270,
-              153.33333333333334
+              180
             ],
             "flags": {},
-            "order": 2,
+            "order": 5,
             "mode": 0,
             "inputs": [
               {
@@ -306,7 +434,7 @@
                 "widget": {
                   "name": "clip_name1"
                 },
-                "link": null
+                "link": 386
               },
               {
                 "localized_name": "clip_name2",
@@ -315,7 +443,7 @@
                 "widget": {
                   "name": "clip_name2"
                 },
-                "link": null
+                "link": 387
               },
               {
                 "localized_name": "type",
@@ -348,9 +476,13 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "DualCLIPLoader",
+              "ue_properties": {
+                "widget_ue_connectable": {},
+                "input_ue_unconnectable": {}
+              },
               "cnr_id": "comfy-core",
               "ver": "0.3.40",
+              "Node name for S&R": "DualCLIPLoader",
               "models": [
                 {
                   "name": "clip_l.safetensors",
@@ -375,15 +507,15 @@
             "id": 27,
             "type": "EmptySD3LatentImage",
             "pos": [
-              -810.0000904528541,
-              619.9999487326824
+              -420,
+              640
             ],
             "size": [
               270,
-              125
+              170
             ],
             "flags": {},
-            "order": 4,
+            "order": 1,
             "mode": 0,
             "inputs": [
               {
@@ -426,9 +558,13 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "EmptySD3LatentImage",
+              "ue_properties": {
+                "widget_ue_connectable": {},
+                "input_ue_unconnectable": {}
+              },
               "cnr_id": "comfy-core",
-              "ver": "0.3.40"
+              "ver": "0.3.40",
+              "Node name for S&R": "EmptySD3LatentImage"
             },
             "widgets_values": [
               1024,
@@ -440,7 +576,7 @@
             "id": 45,
             "type": "CLIPTextEncode",
             "pos": [
-              -490,
+              -460,
               150
             ],
             "size": [
@@ -479,6 +615,12 @@
               }
             ],
             "properties": {
+              "ue_properties": {
+                "widget_ue_connectable": {},
+                "input_ue_unconnectable": {}
+              },
+              "cnr_id": "comfy-core",
+              "ver": "0.18.1",
               "Node name for S&R": "CLIPTextEncode"
             },
             "widgets_values": [
@@ -489,15 +631,15 @@
             "id": 31,
             "type": "KSampler",
             "pos": [
-              -90,
-              120
+              -50,
+              260
             ],
             "size": [
-              315,
-              270
+              320,
+              350
             ],
             "flags": {},
-            "order": 5,
+            "order": 2,
             "mode": 0,
             "inputs": [
               {
@@ -531,7 +673,7 @@
                 "widget": {
                   "name": "seed"
                 },
-                "link": null
+                "link": 382
               },
               {
                 "localized_name": "steps",
@@ -591,9 +733,13 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "KSampler",
+              "ue_properties": {
+                "widget_ue_connectable": {},
+                "input_ue_unconnectable": {}
+              },
               "cnr_id": "comfy-core",
-              "ver": "0.3.40"
+              "ver": "0.3.40",
+              "Node name for S&R": "KSampler"
             },
             "widgets_values": [
               0,
@@ -609,17 +755,17 @@
             "id": 8,
             "type": "VAEDecode",
             "pos": [
-              250,
+              20,
               120
             ],
             "size": [
-              140,
-              46
+              230,
+              100
             ],
             "flags": {
               "collapsed": false
             },
-            "order": 3,
+            "order": 0,
             "mode": 0,
             "inputs": [
               {
@@ -647,22 +793,25 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "VAEDecode",
+              "ue_properties": {
+                "widget_ue_connectable": {},
+                "input_ue_unconnectable": {}
+              },
               "cnr_id": "comfy-core",
-              "ver": "0.3.40"
-            },
-            "widgets_values": []
+              "ver": "0.3.40",
+              "Node name for S&R": "VAEDecode"
+            }
           },
           {
             "id": 42,
             "type": "ConditioningZeroOut",
             "pos": [
-              -380,
+              -350,
               420
             ],
             "size": [
-              204.134765625,
-              26
+              230,
+              80
             ],
             "flags": {
               "collapsed": false
@@ -688,22 +837,25 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "ConditioningZeroOut",
+              "ue_properties": {
+                "widget_ue_connectable": {},
+                "input_ue_unconnectable": {}
+              },
               "cnr_id": "comfy-core",
-              "ver": "0.3.40"
-            },
-            "widgets_values": []
+              "ver": "0.3.40",
+              "Node name for S&R": "ConditioningZeroOut"
+            }
           }
         ],
         "groups": [
           {
             "id": 1,
-            "title": "Step 1 - Load Models Here",
+            "title": "Model",
             "bounding": [
               -820,
               70,
-              300,
-              460
+              320,
+              750
             ],
             "color": "#3f789e",
             "font_size": 24,
@@ -711,12 +863,12 @@
           },
           {
             "id": 2,
-            "title": "Step 2 - Image Size",
+            "title": "Image Size",
             "bounding": [
-              -820,
-              550,
-              300,
-              200
+              -470,
+              570,
+              380,
+              250
             ],
             "color": "#3f789e",
             "font_size": 24,
@@ -724,12 +876,12 @@
           },
           {
             "id": 3,
-            "title": "Step 3 - Prompt",
+            "title": "Prompt",
             "bounding": [
-              -500,
+              -470,
               70,
               380,
-              390
+              470
             ],
             "color": "#3f789e",
             "font_size": 24,
@@ -832,6 +984,46 @@
             "target_id": 27,
             "target_slot": 1,
             "type": "INT"
+          },
+          {
+            "id": 382,
+            "origin_id": -10,
+            "origin_slot": 3,
+            "target_id": 31,
+            "target_slot": 4,
+            "type": "INT"
+          },
+          {
+            "id": 385,
+            "origin_id": -10,
+            "origin_slot": 4,
+            "target_id": 38,
+            "target_slot": 0,
+            "type": "COMBO"
+          },
+          {
+            "id": 386,
+            "origin_id": -10,
+            "origin_slot": 5,
+            "target_id": 40,
+            "target_slot": 0,
+            "type": "COMBO"
+          },
+          {
+            "id": 387,
+            "origin_id": -10,
+            "origin_slot": 6,
+            "target_id": 40,
+            "target_slot": 1,
+            "type": "COMBO"
+          },
+          {
+            "id": 388,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 39,
+            "target_slot": 0,
+            "type": "COMBO"
           }
         ],
         "extra": {
@@ -841,7 +1033,6 @@
       }
     ]
   },
-  "config": {},
   "extra": {
     "ds": {
       "scale": 0.7513148009015777,
@@ -850,7 +1041,6 @@
         146.66925047394233
       ]
     },
-    "workflowRendererVersion": "LG"
-  },
-  "version": 0.4
+    "ue_links": []
+  }
 }
