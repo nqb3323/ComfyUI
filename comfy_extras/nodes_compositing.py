@@ -190,7 +190,7 @@ class SplitImageChannels(io.ComfyNode):
     def define_schema(cls):
         return io.Schema(
             node_id="SplitImageChannels",
-            search_aliases=["extract alpha", "extract channels", "separate transparency", "split channels", "remove alpha"],
+            search_aliases=["convert to grayscale", "extract channels", "grayscale", "split channels", "RGB channels"],
             display_name="Split Image Channels",
             category="mask/compositing",
             inputs=[
