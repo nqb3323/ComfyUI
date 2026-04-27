@@ -52,11 +52,42 @@ class TestImageBlend:
         This is the exact runtime error reported in CORE-103:
         'The size of tensor a (5) must match the size of tensor b (3) at
         non-singleton dimension 3'.
+
+        The output is capped at 4 channels (RGBA) because downstream
+        SaveImage/PreviewImage rely on PIL.Image.fromarray, which only
+        supports 1/3/4-channel arrays. Without this cap, the failure would
+        just shift from blend-time to save-time.
         """
         image1 = self.create_test_image(channels=3)
         image2 = self.create_test_image(channels=5)
         result = Blend.execute(image1, image2, 0.5, "multiply")
-        assert result[0].shape == (1, 64, 64, 5)
+        assert result[0].shape == (1, 64, 64, 4)
+
+    def test_output_capped_at_four_channels(self):
+        """Both inputs having > 4 channels should still produce a 4-channel
+        output, since SaveImage/PreviewImage cannot serialize anything
+        wider than RGBA via PIL.Image.fromarray."""
+        image1 = self.create_test_image(channels=6)
+        image2 = self.create_test_image(channels=5)
+        result = Blend.execute(image1, image2, 0.5, "normal")
+        assert result[0].shape == (1, 64, 64, 4)
+
+    def test_save_compatible_output_passes_through_pil(self):
+        """The blended result must be convertible by PIL.Image.fromarray,
+        which is what SaveImage/PreviewImage do downstream. Catches the
+        case where a >4-channel output would silently break save/preview."""
+        from PIL import Image
+        import numpy as np
+
+        image1 = self.create_test_image(channels=3)
+        image2 = self.create_test_image(channels=5)
+        result = Blend.execute(image1, image2, 0.5, "normal")
+        # Mirror SaveImage's exact conversion (nodes.py:1662)
+        arr = np.clip(255.0 * result[0][0].cpu().numpy(), 0, 255).astype(np.uint8)
+        img = Image.fromarray(arr)
+        assert img.mode in ("L", "RGB", "RGBA"), (
+            f"Output mode {img.mode!r} cannot be saved by SaveImage"
+        )
 
     def test_different_size_and_channels(self):
         """Different spatial size AND different channel counts should both be reconciled."""

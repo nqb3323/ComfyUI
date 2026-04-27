@@ -36,16 +36,22 @@ class Blend(io.ComfyNode):
     @classmethod
     def execute(cls, image1: torch.Tensor, image2: torch.Tensor, blend_factor: float, blend_mode: str) -> io.NodeOutput:
         image2 = image2.to(image1.device)
-        # Match channel counts when one image has an extra channel (typically
-        # an alpha channel, e.g. RGB + RGBA) by padding the image with fewer
-        # channels with 1.0s. Mirrors the logic used by the ImageStitch node
-        # so behavior is consistent across nodes.
-        if image1.shape[-1] != image2.shape[-1]:
-            max_channels = max(image1.shape[-1], image2.shape[-1])
-            if image1.shape[-1] < max_channels:
-                image1 = torch.cat([image1, torch.ones(*image1.shape[:-1], max_channels - image1.shape[-1], device=image1.device, dtype=image1.dtype)], dim=-1)
-            if image2.shape[-1] < max_channels:
-                image2 = torch.cat([image2, torch.ones(*image2.shape[:-1], max_channels - image2.shape[-1], device=image2.device, dtype=image2.dtype)], dim=-1)
+        # Reconcile mismatched channel counts. Downstream nodes (SaveImage,
+        # PreviewImage) ultimately call PIL.Image.fromarray which only
+        # supports 1/3/4-channel arrays, so we cap the output at 4 channels
+        # (RGBA): any image with > 4 channels is truncated, and any image
+        # with fewer channels than the (capped) target is padded with 1.0s
+        # so the extra slot behaves like an opaque alpha channel.
+        if image1.shape[-1] != image2.shape[-1] or image1.shape[-1] > 4 or image2.shape[-1] > 4:
+            target_channels = min(max(image1.shape[-1], image2.shape[-1]), 4)
+            if image1.shape[-1] > target_channels:
+                image1 = image1[..., :target_channels]
+            elif image1.shape[-1] < target_channels:
+                image1 = torch.cat([image1, torch.ones(*image1.shape[:-1], target_channels - image1.shape[-1], device=image1.device, dtype=image1.dtype)], dim=-1)
+            if image2.shape[-1] > target_channels:
+                image2 = image2[..., :target_channels]
+            elif image2.shape[-1] < target_channels:
+                image2 = torch.cat([image2, torch.ones(*image2.shape[:-1], target_channels - image2.shape[-1], device=image2.device, dtype=image2.dtype)], dim=-1)
         if image1.shape != image2.shape:
             image2 = image2.permute(0, 3, 1, 2)
             image2 = comfy.utils.common_upscale(image2, image1.shape[2], image1.shape[1], upscale_method='bicubic', crop='center')
