@@ -2,8 +2,8 @@
 * @comfyanonymous @kosinkadink @guill @alexisrolland @rattus128
 
 # Partner nodes team maintains API nodes
-/comfy_api_nodes/ @Comfy-Org/@partner-nodes-mergers
+/comfy_api_nodes/ @Comfy-Org/partner-nodes-mergers
 
 # Frontend team maintains `comfyui-frontend-package`
 # Go to market team maintains `comfyui-workflow-templates` and `comfyui-embedded-docs`
-/requirements.txt @Comfy-Org/@frontend-team @Comfy-Org/@gtm-team
+/requirements.txt @Comfy-Org/frontend-team @Comfy-Org/gtm-team
