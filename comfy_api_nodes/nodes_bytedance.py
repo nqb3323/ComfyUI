@@ -1984,6 +1984,18 @@ def _seedance_group_name_input() -> IO.String.Input:
     )
 
 
+def _seedance_asset_name_input() -> IO.String.Input:
+    return IO.String.Input(
+        "asset_name",
+        default="",
+        tooltip=(
+            "Optional label for the asset, shown in the asset selector dropdown. "
+            "Up to 64 characters. Leave empty to identify the asset by its id."
+        ),
+        optional=True,
+    )
+
+
 class ByteDanceCreateImageAsset(IO.ComfyNode):
 
     @classmethod
@@ -2002,6 +2014,7 @@ class ByteDanceCreateImageAsset(IO.ComfyNode):
                 IO.Image.Input("image", tooltip="Image to register as a personal asset."),
                 _seedance_group_picker_input(),
                 _seedance_group_name_input(),
+                _seedance_asset_name_input(),
             ],
             outputs=[
                 IO.String.Output(display_name="asset_id"),
@@ -2021,6 +2034,7 @@ class ByteDanceCreateImageAsset(IO.ComfyNode):
         image: Input.Image,
         group_id: str = "",
         group_name: str = "",
+        asset_name: str = "",
     ) -> IO.NodeOutput:
         validate_image_dimensions(image, min_width=300, max_width=6000, min_height=300, max_height=6000)
         validate_image_aspect_ratio(image, min_ratio=(0.4, 1), max_ratio=(2.5, 1))
@@ -2029,7 +2043,7 @@ class ByteDanceCreateImageAsset(IO.ComfyNode):
             cls,
             group_id=resolved_group,
             url=await upload_image_to_comfyapi(cls, image),
-            name="",
+            name=asset_name.strip()[:64],
             asset_type="Image",
         )
         await _wait_for_asset_active(cls, asset_id, resolved_group)
@@ -2059,6 +2073,7 @@ class ByteDanceCreateVideoAsset(IO.ComfyNode):
                 IO.Video.Input("video", tooltip="Video to register as a personal asset."),
                 _seedance_group_picker_input(),
                 _seedance_group_name_input(),
+                _seedance_asset_name_input(),
             ],
             outputs=[
                 IO.String.Output(display_name="asset_id"),
@@ -2078,6 +2093,7 @@ class ByteDanceCreateVideoAsset(IO.ComfyNode):
         video: Input.Video,
         group_id: str = "",
         group_name: str = "",
+        asset_name: str = "",
     ) -> IO.NodeOutput:
         validate_video_duration(video, min_duration=2, max_duration=15)
         validate_video_dimensions(video, min_width=300, max_width=6000, min_height=300, max_height=6000)
@@ -2102,7 +2118,7 @@ class ByteDanceCreateVideoAsset(IO.ComfyNode):
             cls,
             group_id=resolved_group,
             url=await upload_video_to_comfyapi(cls, video),
-            name="",
+            name=asset_name.strip()[:64],
             asset_type="Video",
         )
         await _wait_for_asset_active(cls, asset_id, resolved_group)
