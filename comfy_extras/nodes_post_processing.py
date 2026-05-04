@@ -672,6 +672,7 @@ class ColorTransfer(io.ComfyNode):
             search_aliases=["color match", "color grading", "color correction", "match colors", "color transform", "mkl", "reinhard", "histogram"],
             inputs=[
                 io.Image.Input("image_target", tooltip="Image(s) to apply the color transform to."),
+                io.Image.Input("image_ref", tooltip="Reference image(s) to match colors to."),
                 io.Combo.Input("method", options=['reinhard_lab', 'mkl_lab', 'histogram'],),
                 io.DynamicCombo.Input("source_stats",
                     tooltip="per_frame: each frame matched to image_ref individually. uniform: pool stats across all source frames as baseline, match to image_ref. target_frame: use one chosen frame as the baseline for the transform to image_ref, applied uniformly to all frames (preserves relative differences)",
@@ -684,7 +685,6 @@ class ColorTransfer(io.ComfyNode):
                         ]),
                     ]),
                 io.Float.Input("strength", default=1.0, min=0.0, max=10.0, step=0.01),
-                io.Image.Input("image_ref", optional=True, tooltip="Reference image(s) to match colors to. If not provided, processing is skipped"),
             ],
             outputs=[
                 io.Image.Output(display_name="image"),
@@ -834,7 +834,7 @@ class ColorTransfer(io.ComfyNode):
         return per_frame_transform
 
     @classmethod
-    def execute(cls, image_target, method, source_stats, strength=1.0, image_ref=None) -> io.NodeOutput:
+    def execute(cls, image_target, image_ref, method, source_stats, strength=1.0) -> io.NodeOutput:
         stats_mode = source_stats["source_stats"]
         target_index = source_stats.get("target_index", 0)
 
