@@ -2510,9 +2510,16 @@ components:
           type: string
           nullable: true
           description: |
-            Category override used by the essentials pack. `null` for nodes
-            that don't set `ESSENTIALS_CATEGORY` (V1) or whose `Schema`
-            doesn't populate `essentials_category` (V3 / `comfy_api.latest.io`).
+            Category override used by the essentials pack. The
+            `essentials_category` key may be present with a string value,
+            present and `null`, or absent entirely:
+
+            - V1 nodes: `essentials_category` is **omitted** when the node
+              class doesn't define an `ESSENTIALS_CATEGORY` attribute, and
+              **`null`** if the attribute is explicitly set to `None`.
+            - V3 nodes (`comfy_api.latest.io`): `essentials_category` is
+              **always present**, and **`null`** for nodes whose `Schema`
+              doesn't populate it.
 
     # -------------------------------------------------------------------
     # Models
