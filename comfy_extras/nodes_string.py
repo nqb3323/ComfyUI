@@ -344,7 +344,7 @@ class RegexReplace(io.ComfyNode):
     def define_schema(cls):
         return io.Schema(
             node_id="RegexReplace",
-            search_aliases=["regex replace", "regex", "pattern replace", "regex replace", "substitution"],
+            search_aliases=["regex replace", "regex", "pattern replace", "substitution"],
             display_name="Replace Text (Regex)",
             category="text",
             description="Find and replace text using regex patterns.",
