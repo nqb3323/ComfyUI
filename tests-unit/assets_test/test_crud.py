@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 import requests
-from helpers import get_asset_filename, trigger_sync_seed_assets
+from helpers import assert_job_id_prompt_id_match, get_asset_filename, trigger_sync_seed_assets
 
 
 def test_create_from_hash_success(
@@ -22,6 +22,7 @@ def test_create_from_hash_success(
     assert r1.status_code == 201, b1
     assert b1["asset_hash"] == h
     assert b1["created_new"] is False
+    assert_job_id_prompt_id_match(b1)
     aid = b1["id"]
 
     # Calling again with the same name creates a new AssetReference (duplicates allowed)
@@ -29,6 +30,7 @@ def test_create_from_hash_success(
     b2 = r2.json()
     assert r2.status_code == 201, b2
     assert b2["id"] != aid  # new reference, not the same one
+    assert_job_id_prompt_id_match(b2)
 
 
 def test_get_and_delete_asset(http: requests.Session, api_base: str, seeded_asset: dict):
@@ -41,6 +43,7 @@ def test_get_and_delete_asset(http: requests.Session, api_base: str, seeded_asse
     assert detail["id"] == aid
     assert "user_metadata" in detail
     assert "filename" in detail["user_metadata"]
+    assert_job_id_prompt_id_match(detail)
 
     # DELETE (hard delete to also remove underlying asset and file)
     rd = http.delete(f"{api_base}/api/assets/{aid}?delete_content=true", timeout=120)
@@ -143,6 +146,7 @@ def test_update_asset_fields(http: requests.Session, api_base: str, seeded_asset
     assert body["user_metadata"]["purpose"] == "updated"
     # filename should still be present and normalized by server
     assert "filename" in body["user_metadata"]
+    assert_job_id_prompt_id_match(body)
 
 
 def test_head_asset_by_hash(http: requests.Session, api_base: str, seeded_asset: dict):

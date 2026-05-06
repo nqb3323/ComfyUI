@@ -26,3 +26,19 @@ def trigger_sync_seed_assets(session: requests.Session, base_url: str) -> None:
 
 def get_asset_filename(asset_hash: str, extension: str) -> str:
     return asset_hash.removeprefix("blake3:") + extension
+
+
+def assert_job_id_prompt_id_match(body: dict) -> None:
+    """Assert that job_id and prompt_id are both present with the same value, or both absent."""
+    job_present = "job_id" in body
+    prompt_present = "prompt_id" in body
+    assert job_present == prompt_present, (
+        f"job_id and prompt_id must both be present or both absent: "
+        f"job_id present={job_present}, prompt_id present={prompt_present}"
+    )
+    if job_present:
+        job_id = body["job_id"]
+        prompt_id = body["prompt_id"]
+        assert job_id == prompt_id, (
+            f"job_id and prompt_id must match: job_id={job_id!r}, prompt_id={prompt_id!r}"
+        )

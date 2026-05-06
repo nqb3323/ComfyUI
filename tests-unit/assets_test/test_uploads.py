@@ -4,6 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 import requests
 import pytest
+from helpers import assert_job_id_prompt_id_match
 
 
 def test_upload_ok_duplicate_reference(http: requests.Session, api_base: str, make_asset_bytes):
@@ -17,6 +18,7 @@ def test_upload_ok_duplicate_reference(http: requests.Session, api_base: str, ma
     a1 = r1.json()
     assert r1.status_code == 201, a1
     assert a1["created_new"] is True
+    assert_job_id_prompt_id_match(a1)
 
     # Second upload with the same data and name creates a new AssetReference (duplicates allowed)
     # Returns 200 because Asset already exists, but a new AssetReference is created
@@ -27,6 +29,7 @@ def test_upload_ok_duplicate_reference(http: requests.Session, api_base: str, ma
     assert r2.status_code in (200, 201), a2
     assert a2["asset_hash"] == a1["asset_hash"]
     assert a2["id"] != a1["id"]  # new reference with same content
+    assert_job_id_prompt_id_match(a2)
 
     # Third upload with the same data but different name also creates new AssetReference
     files = {"file": (name, data, "application/octet-stream")}
@@ -63,6 +66,7 @@ def test_upload_fastpath_from_existing_hash_no_file(http: requests.Session, api_
     assert r2.status_code == 200, b2  # fast path returns 200 with created_new == False
     assert b2["created_new"] is False
     assert b2["asset_hash"] == h
+    assert_job_id_prompt_id_match(b2)
 
 
 def test_upload_fastpath_with_known_hash_and_file(

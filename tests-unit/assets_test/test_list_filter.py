@@ -3,6 +3,7 @@ import uuid
 
 import pytest
 import requests
+from helpers import assert_job_id_prompt_id_match
 
 
 def test_list_assets_paging_and_sort(http: requests.Session, api_base: str, asset_factory, make_asset_bytes):
@@ -26,6 +27,8 @@ def test_list_assets_paging_and_sort(http: requests.Session, api_base: str, asse
     got1 = [a["name"] for a in b1["assets"]]
     assert got1 == sorted(names)[:2]
     assert b1["has_more"] is True
+    for asset in b1["assets"]:
+        assert_job_id_prompt_id_match(asset)
 
     r2 = http.get(
         api_base + "/api/assets",
@@ -111,6 +114,7 @@ def test_list_assets_sort_by_updated_at_desc(http, api_base, asset_factory, make
     rp = http.put(f"{api_base}/api/assets/{a2['id']}", json={"name": "upd_b_renamed.safetensors"}, timeout=120)
     upd = rp.json()
     assert rp.status_code == 200, upd
+    assert_job_id_prompt_id_match(upd)
 
     r = http.get(
         api_base + "/api/assets",
