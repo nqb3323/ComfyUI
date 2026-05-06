@@ -5857,9 +5857,16 @@ components:
         name:
           type: string
           description: Name of the asset file
+        hash:
+          type: string
+          nullable: true
+          description: Blake3 content hash of the asset (preferred over asset_hash)
+          pattern: "^blake3:[a-f0-9]{64}$"
         asset_hash:
           type: string
-          description: Blake3 hash of the asset content
+          nullable: true
+          deprecated: true
+          description: "Deprecated: use `hash` instead. Blake3 hash of the asset content."
           pattern: "^blake3:[a-f0-9]{64}$"
         size:
           type: integer
@@ -5931,8 +5938,16 @@ components:
           format: uuid
         name:
           type: string
+        hash:
+          type: string
+          nullable: true
+          description: Blake3 content hash of the asset (preferred over asset_hash)
+          pattern: "^blake3:[a-f0-9]{64}$"
         asset_hash:
           type: string
+          nullable: true
+          deprecated: true
+          description: "Deprecated: use `hash` instead. Blake3 hash of the asset content."
           pattern: "^blake3:[a-f0-9]{64}$"
         tags:
           type: array
