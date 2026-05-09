@@ -2580,6 +2580,13 @@ paths:
       summary: Get pre-rendered node info schema
       description: "[cloud-only] Returns the static ComfyUI object_info schema, identical for every caller, rendered once at startup with empty model/user-file context. Served by a raw HTTP handler that writes pre-rendered bytes with ETag + Cache-Control validators for RFC 7232 conditional GETs."
       x-runtime: [cloud]
+      parameters:
+        - name: If-None-Match
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Entity tag previously returned by this endpoint. When present and matching, the server returns 304 Not Modified.
       responses:
         "200":
           description: Node info schema
@@ -2661,6 +2668,12 @@ paths:
           schema:
             type: string
           description: Node class identifier
+        - name: If-None-Match
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Entity tag previously returned by this endpoint. When present and matching, the server returns 304 Not Modified.
       responses:
         "200":
           description: Single node definition
