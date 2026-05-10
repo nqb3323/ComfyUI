@@ -1185,7 +1185,7 @@
                 ]
               }
             ],
-            "title": "Stpes",
+            "title": "Steps",
             "properties": {
               "Node name for S&R": "PrimitiveInt"
             },
@@ -1588,7 +1588,7 @@
           },
           {
             "id": 50,
-            "title": "Ligtning LoRA",
+            "title": "Lightning LoRA",
             "bounding": [
               270,
               220,
