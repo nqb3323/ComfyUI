@@ -12,9 +12,8 @@ class wanBlockSwap(io.ComfyNode):
     def define_schema(cls):
         return io.Schema(
             node_id="wanBlockSwap",
-            display_name="WAN Block Swap",
-            category="model_patches",
-            description="NOP",
+            category="",
+            description="Intercept wanBlockSwap custom node that causes major instability and make it no-op.",
             inputs=[
                 io.Model.Input("model"),
             ],
