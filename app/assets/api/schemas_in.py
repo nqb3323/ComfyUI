@@ -1,4 +1,5 @@
 import json
+import uuid
 from dataclasses import dataclass
 from typing import Any, Literal
 
@@ -52,7 +53,7 @@ class ParsedUpload:
 class ListAssetsQuery(BaseModel):
     include_tags: list[str] = Field(default_factory=list)
     exclude_tags: list[str] = Field(default_factory=list)
-    job_ids: list[str] = Field(default_factory=list)
+    job_ids: list[str] = Field(default_factory=list, max_length=100)
     name_contains: str | None = None
 
     # Accept either a JSON string (query param) or a dict
@@ -72,14 +73,28 @@ class ListAssetsQuery(BaseModel):
         if v is None:
             return []
         if isinstance(v, str):
-            return [t.strip() for t in v.split(",") if t.strip()]
-        if isinstance(v, list):
-            out: list[str] = []
+            tokens = [t.strip() for t in v.split(",") if t.strip()]
+        elif isinstance(v, list):
+            tokens = []
             for item in v:
-                if isinstance(item, str):
-                    out.extend([t.strip() for t in item.split(",") if t.strip()])
-            return out
-        return v
+                if not isinstance(item, str):
+                    raise ValueError(
+                        f"job_ids items must be strings, got {type(item).__name__}"
+                    )
+                tokens.extend([t.strip() for t in item.split(",") if t.strip()])
+        else:
+            raise ValueError("job_ids must be a string or list of strings")
+        seen: set[str] = set()
+        out: list[str] = []
+        for t in tokens:
+            try:
+                normalized = str(uuid.UUID(t))
+            except ValueError:
+                raise ValueError(f"invalid UUID in job_ids: {t!r}")
+            if normalized not in seen:
+                seen.add(normalized)
+                out.append(normalized)
+        return out
 
     @field_validator("include_tags", "exclude_tags", mode="before")
     @classmethod
