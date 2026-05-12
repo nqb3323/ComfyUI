@@ -52,6 +52,7 @@ class ParsedUpload:
 class ListAssetsQuery(BaseModel):
     include_tags: list[str] = Field(default_factory=list)
     exclude_tags: list[str] = Field(default_factory=list)
+    job_ids: list[str] = Field(default_factory=list)
     name_contains: str | None = None
 
     # Accept either a JSON string (query param) or a dict
@@ -64,6 +65,21 @@ class ListAssetsQuery(BaseModel):
         "created_at"
     )
     order: Literal["asc", "desc"] = "desc"
+
+    @field_validator("job_ids", mode="before")
+    @classmethod
+    def _split_csv_job_ids(cls, v):
+        if v is None:
+            return []
+        if isinstance(v, str):
+            return [t.strip() for t in v.split(",") if t.strip()]
+        if isinstance(v, list):
+            out: list[str] = []
+            for item in v:
+                if isinstance(item, str):
+                    out.extend([t.strip() for t in item.split(",") if t.strip()])
+            return out
+        return v
 
     @field_validator("include_tags", "exclude_tags", mode="before")
     @classmethod

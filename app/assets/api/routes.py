@@ -213,6 +213,7 @@ async def list_assets_route(request: web.Request) -> web.Response:
         owner_id=USER_MANAGER.get_request_user_id(request),
         include_tags=q.include_tags,
         exclude_tags=q.exclude_tags,
+        job_ids=q.job_ids,
         name_contains=q.name_contains,
         metadata_filter=q.metadata_filter,
         limit=q.limit,
