@@ -162,7 +162,7 @@ class TestListReferencesPage:
         asset = _make_asset(session, "hash1")
         ref1 = _make_reference(session, asset, name="with_job")
         ref1.job_id = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
-        ref2 = _make_reference(session, asset, name="no_job")
+        _make_reference(session, asset, name="no_job")
         session.commit()
 
         refs, _, total = list_references_page(
@@ -177,7 +177,7 @@ class TestListReferencesPage:
         ref1.job_id = "aaaaaaaa-1111-2222-3333-444444444444"
         ref2 = _make_reference(session, asset, name="job_b")
         ref2.job_id = "bbbbbbbb-1111-2222-3333-444444444444"
-        ref3 = _make_reference(session, asset, name="no_job")
+        _make_reference(session, asset, name="no_job")
         session.commit()
 
         refs, _, total = list_references_page(
